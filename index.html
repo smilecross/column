@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>コラム作成＆管理ノート</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>コラム作成 & 管理</h1>
+        </header>
+
+        <main>
+            <div class="date_box">
+                <h2>掲載日</h2>
+                <textarea id="date"></textarea>
+            </div>
+
+            <div class="category_box">
+                <h2>カテゴリー</h2>
+                <select name="category" id="category">
+                    <option value="basic">基本操作</option>
+                    <option value="charge">料金</option>
+                    <option value="admin">行政サービス</option>
+                    <option value="disaster">防災</option>
+                    <option value="security">セキュリティ</option>
+                    <option value="money">お金</option>
+                    <option value="life">暮らし</option>
+                    <option value="other">その他</option>
+                </select>
+            </div>
+
+            <div class="app_box">
+                <h2>アプリ名</h2>
+                <input type="text" id="app_input">
+                <h2>アプリの機能や特徴</h2>
+                <textarea id="com"></textarea>
+            </div>
+
+            <div class="save_btn">
+                <div id="save">保存する</div>
+            </div>
+            <br>
+            <div class="clear_btn">
+                <div id="clear">削除する</div>
+            </div>
+
+            <div class="list_box">
+                <h2>履歴</h2>
+                <textarea id="list"></textarea>
+            </div>
+            <!-- <div class="com_list">
+                <div class="redate_box">
+                    <h3>掲載日</h3>
+                    <textarea id="redate_area"></textarea>
+                </div>
+
+                <div class="recategory_box">
+                    <h3>カテゴリ</h3>
+                    <textarea id="recategory"></textarea>
+                </div>
+
+                <div class="reapp_box">
+                    <h3>アプリ名</h3>
+                    <input type="re_app_area" id="reapp_input">
+                </div>
+                <div>
+                    <h3>機能や特徴</h3>
+                    <textarea id="recom_area"></textarea>
+                </div>
+            </div> -->
+
+
+        </main>
+    </div>
+    <footer>
+        <small>©️2023 CROSSHEART</small>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <script>
+        //1.Saveクリックイベント
+
+        $("#save").on("click", function () {
+            const date = $("#date_area").val();
+            const category = $("#category").val();
+            const app = $("#app_input").val();
+            const com = $("#com_area").val();
+            const data = {
+                news: date,
+                no: category,
+                app_name: app,
+                point: com,
+            };
+            console.log(data);
+            const json = JSON.stringify(data);
+            console.log(json);
+            localStorage.setItem('column', json);
+        });
+
+
+        //2.clearクリックイベント
+        $("#clear").on("click", function () {
+            localStorage.removeItem("column");
+            alert("削除する");
+            $("#date").val("");
+            $("#category").val("");
+            $("#app_input").val("");
+            $("#com").val("");
+        });
+
+
+        //3.ページ読み込み：保存データ取得表示
+        if (localStorage.getItem('column')) {
+            const json = localStorage.getItem('column')
+            console.log(json);
+            const data = JSON.parse(json);
+
+            $('#input').val(data.title);
+            $('#text_area').val(data.text);
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
