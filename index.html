@@ -10,88 +10,176 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <header>
-            <h1>コラム作成 & 管理</h1>
-        </header>
+    <header>
+        <h1>コラム作成 & 管理</h1>
+    </header>
 
-        <main>
-            <div class="date_box">
-                <h2>掲載日</h2>
-                <textarea id="date"></textarea>
-            </div>
+    <main>
+        <input type="text" id="date" placeholder="掲載日">
+        <!-- <input type="text" id="カテゴリー" placeholder="カテゴリー"> -->
+        <!-- <input type="text" id="category" placeholder="カテゴリー"> -->
+        <select name="category" id="category">
+            <option value="basic">基本操作</option>
+            <option value="charge">料金</option>
+            <option value="admin">行政サービス</option>
+            <option value="disaster">防災</option>
+            <option value="security">セキュリティ</option>
+            <option value="money">お金</option>
+            <option value="life">暮らし</option>
+            <option value="other">その他</option>
+        </select>
+        <input type="text" id="app_name" placeholder="アプリやサービス名">
+        <input type="text" id="comment" placeholder="機能や特徴">
+        <input type="button" id="add" value="保存する">
 
-            <div class="category_box">
-                <h2>カテゴリー</h2>
-                <select name="category" id="category">
-                    <option value="basic">基本操作</option>
-                    <option value="charge">料金</option>
-                    <option value="admin">行政サービス</option>
-                    <option value="disaster">防災</option>
-                    <option value="security">セキュリティ</option>
-                    <option value="money">お金</option>
-                    <option value="life">暮らし</option>
-                    <option value="other">その他</option>
-                </select>
-            </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>掲載日</th>
+                    <th>カテゴリー</th>
+                    <th>アプリやサービス名</th>
+                    <th>機能や特徴</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div align="center" class="clear.btn">
+            <input type="button" id="clear" value="削除する">
+        </div>
 
-            <div class="app_box">
-                <h2>アプリ名</h2>
-                <input type="text" id="app_input">
-                <h2>アプリの機能や特徴</h2>
-                <textarea id="com"></textarea>
-            </div>
-
-            <div class="save_btn">
-                <div id="save">保存する</div>
-            </div>
-            <br>
-            <div class="clear_btn">
-                <div id="clear">削除する</div>
-            </div>
-
-            <div class="list_box">
-                <h2>履歴</h2>
-                <textarea id="list"></textarea>
-            </div>
-            <!-- <div class="com_list">
-                <div class="redate_box">
-                    <h3>掲載日</h3>
-                    <textarea id="redate_area"></textarea>
-                </div>
-
-                <div class="recategory_box">
-                    <h3>カテゴリ</h3>
-                    <textarea id="recategory"></textarea>
-                </div>
-
-                <div class="reapp_box">
-                    <h3>アプリ名</h3>
-                    <input type="re_app_area" id="reapp_input">
-                </div>
-                <div>
-                    <h3>機能や特徴</h3>
-                    <textarea id="recom_area"></textarea>
-                </div>
-            </div> -->
-
-
-        </main>
+    </main>
     </div>
     <footer>
         <small>©️2023 CROSSHEART</small>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-
     <script>
-        //1.Saveクリックイベント
+        $(function () {
+            const COLUMN_LIST = "column_list";
 
-        $("#save").on("click", function () {
-            const date = $("#date_area").val();
+            //共通
+            function saveLocalStorage(date, category, app_name, comment) {
+                if (isBlank(date) || isBlank(category) || isBlank(app_name) || isBlank(comment)) {
+                    alert("error");
+                    return false;
+                }
+
+
+                //ローカルストレージの値を取得
+                var mainArray = [];
+                var localStJSON = getLocalStorage(date);
+                if (localStJSON != null && localStJSON != "") {
+                    //jsonから連想配列に変換
+                    var mainArray = JSON.parse(localStJSON);
+                }
+
+                //連想配列のチェック
+                if ($.isPlainObject(category)) {
+                    mainArray.push(category);
+                } else {
+                    alert("登録のデータ形式がエラーです。");
+                    return false;
+                }
+
+                if ($.isPlainObject(app_name)) {
+                    mainArray.push(app_name);
+                } else {
+                    alert("登録のデータ形式がエラーです。");
+                    return false;
+                }
+
+                if ($.isPlainObject(comment)) {
+                    mainArray.push(comment);
+                } else {
+                    alert("登録のデータ形式がエラーです。");
+                    return false;
+                }
+
+                //連想配列からJSON形式へ
+                var mainJSON = JSON.stringify(mainArray);
+
+                //ローカルストレージに新規保存or上書き
+                localStorage.setItem(date, mainJSON);
+                return true;
+            }
+
+            function removeLocalStorage(date) {
+                if (isBlank(date)) {
+                    alert("error!!");
+                    return false;
+                }
+                //ローカルストレージから削除
+                localStorage.removeItem(date);
+            }
+
+            function getLocalStorageALL() {
+                //ローカルストレージを全てクリア
+                localStorage.clear();
+            }
+
+            //テーブルを自動生成する
+            function bulidTable() {
+                var tableBody = "";
+                //ローカルストレージからデータを取得
+                var localSt = getLocalStorage(COLUMN_LIST);
+                //JSON形式から連想配列へ
+                var localStJSON = JSON.parse(localSt);
+
+
+                $(localStJSON).map(function (index, line) {
+                    tableBody += "<tr>";
+                    tableBody += "<td class='date'>" + line['date'] + "</td>";
+                    tableBody += "<td class='category'>" + line['category'] + "</td>";
+                    tableBody += "<td class='app_name'>" + line['app_name'] + "</td>";
+                    tableBody += "<td class='comment'>" + line['comment'] + "</td>";
+                    tableBody += "</tr>";
+                });
+
+                //テーブルを生成
+                $("table tbody").append(tableBody);
+            }
+        });
+
+        function isBlank(date) {
+            if (data.length == 0 || data == '') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isBlank(category) {
+            if (data.length == 0 || data == '') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isBlank(app_name) {
+            if (data.length == 0 || data == '') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isBlank(comment) {
+            if (data.length == 0 || data == '') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //各種イベント処理//
+        //保存ボタンをクリック
+        $("#add").on("click", function () {
+            const date = $("#date").val();
             const category = $("#category").val();
-            const app = $("#app_input").val();
-            const com = $("#com_area").val();
+            const app = $("#app_name").val();
+            const com = $("#comment").val();
             const data = {
                 news: date,
                 no: category,
@@ -99,34 +187,55 @@
                 point: com,
             };
             console.log(data);
-            const json = JSON.stringify(data);
-            console.log(json);
-            localStorage.setItem('column', json);
+
+            // ローカルストレージにデータを保存
+        //     localStorage.setItem(date, JSON.stringify(data));
+        // });
+
+            // ローカルストレージにデータを保存
+
+            $("table tbody").append('<tr><td class="date">' + date
+            + '</td><td class="category">' + category
+            + '</td><td class="app_name">' + app
+            + '</td><td class="comment">' + com
+            + '</td></tr>');
+
+        //ローカルストレージに保存
+        $(function () {
+            const COLUMN_LIST = "column_list";
+            window.COLUMN_LIST = COLUMN_LIST;
         });
 
-
-        //2.clearクリックイベント
-        $("#clear").on("click", function () {
-            localStorage.removeItem("column");
-            alert("削除する");
-            $("#date").val("");
-            $("#category").val("");
-            $("#app_input").val("");
-            $("#com").val("");
-        });
-
-
-        //3.ページ読み込み：保存データ取得表示
-        if (localStorage.getItem('column')) {
-            const json = localStorage.getItem('column')
-            console.log(json);
-            const data = JSON.parse(json);
-
-            $('#input').val(data.title);
-            $('#text_area').val(data.text);
+        function saveLocalStorage(date, category, app_name, comment) {
+            //ローカルストレージにデータを保存
+            localStorage.setItem(date, JSON.stringify({
+                date: date,
+                category: category,
+                app_name: app_name,
+                comment: comment
+            }));
         }
 
+        var product = { "date": date, "category": category, "app_name": app, "point": com };
+        saveLocalStorage(COLUMN_LIST, product);
 
+        });
+
+
+        //clearクリック
+        $(function () {
+            const COLUMN_LIST = "column_list";
+            window.COLUMN_LIST = COLUMN_LIST;
+            // });
+
+            $("#clear").on("click", function () {
+                removeLocalStorage(COLUMN_LIST);
+                $("table tbody tr").remove();
+            });
+        });
+        function removeLocalStorage(key) {
+            localStorage.removeItem(key);
+        }
 
     </script>
 
