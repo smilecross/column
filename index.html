@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>コラム作成＆管理ノート</title>
     <link rel="stylesheet" href="style.css">
+    <script src="main.js" type="module"></script>
+
 </head>
 
 <body>
@@ -18,7 +20,7 @@
         <input type="text" id="date" placeholder="掲載日">
         <!-- <input type="text" id="カテゴリー" placeholder="カテゴリー"> -->
         <!-- <input type="text" id="category" placeholder="カテゴリー"> -->
-        <select name="category" id="category">
+        <select type="text" name="category" id="category">
             <option value="basic">基本操作</option>
             <option value="charge">料金</option>
             <option value="admin">行政サービス</option>
@@ -30,7 +32,7 @@
         </select>
         <input type="text" id="app_name" placeholder="アプリやサービス名">
         <input type="text" id="comment" placeholder="機能や特徴">
-        <input type="button" id="add" value="保存する">
+        <input type="button" id="send" value="保存する">
 
         <table>
             <thead>
@@ -47,6 +49,7 @@
             <input type="button" id="clear" value="削除する">
         </div>
 
+
     </main>
     </div>
     <footer>
@@ -55,187 +58,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script>
-        $(function () {
-            const COLUMN_LIST = "column_list";
-
-            //共通
-            function saveLocalStorage(date, category, app_name, comment) {
-                if (isBlank(date) || isBlank(category) || isBlank(app_name) || isBlank(comment)) {
-                    alert("error");
-                    return false;
-                }
-
-
-                //ローカルストレージの値を取得
-                var mainArray = [];
-                var localStJSON = getLocalStorage(date);
-                if (localStJSON != null && localStJSON != "") {
-                    //jsonから連想配列に変換
-                    var mainArray = JSON.parse(localStJSON);
-                }
-
-                //連想配列のチェック
-                if ($.isPlainObject(category)) {
-                    mainArray.push(category);
-                } else {
-                    alert("登録のデータ形式がエラーです。");
-                    return false;
-                }
-
-                if ($.isPlainObject(app_name)) {
-                    mainArray.push(app_name);
-                } else {
-                    alert("登録のデータ形式がエラーです。");
-                    return false;
-                }
-
-                if ($.isPlainObject(comment)) {
-                    mainArray.push(comment);
-                } else {
-                    alert("登録のデータ形式がエラーです。");
-                    return false;
-                }
-
-                //連想配列からJSON形式へ
-                var mainJSON = JSON.stringify(mainArray);
-
-                //ローカルストレージに新規保存or上書き
-                localStorage.setItem(date, mainJSON);
-                return true;
-            }
-
-            function removeLocalStorage(date) {
-                if (isBlank(date)) {
-                    alert("error!!");
-                    return false;
-                }
-                //ローカルストレージから削除
-                localStorage.removeItem(date);
-            }
-
-            function getLocalStorageALL() {
-                //ローカルストレージを全てクリア
-                localStorage.clear();
-            }
-
-            //テーブルを自動生成する
-            function bulidTable() {
-                var tableBody = "";
-                //ローカルストレージからデータを取得
-                var localSt = getLocalStorage(COLUMN_LIST);
-                //JSON形式から連想配列へ
-                var localStJSON = JSON.parse(localSt);
-
-
-                $(localStJSON).map(function (index, line) {
-                    tableBody += "<tr>";
-                    tableBody += "<td class='date'>" + line['date'] + "</td>";
-                    tableBody += "<td class='category'>" + line['category'] + "</td>";
-                    tableBody += "<td class='app_name'>" + line['app_name'] + "</td>";
-                    tableBody += "<td class='comment'>" + line['comment'] + "</td>";
-                    tableBody += "</tr>";
-                });
-
-                //テーブルを生成
-                $("table tbody").append(tableBody);
-            }
-        });
-
-        function isBlank(date) {
-            if (data.length == 0 || data == '') {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function isBlank(category) {
-            if (data.length == 0 || data == '') {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function isBlank(app_name) {
-            if (data.length == 0 || data == '') {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function isBlank(comment) {
-            if (data.length == 0 || data == '') {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        //各種イベント処理//
-        //保存ボタンをクリック
-        $("#add").on("click", function () {
-            const date = $("#date").val();
-            const category = $("#category").val();
-            const app = $("#app_name").val();
-            const com = $("#comment").val();
-            const data = {
-                news: date,
-                no: category,
-                app_name: app,
-                point: com,
-            };
-            console.log(data);
-
-            // ローカルストレージにデータを保存
-        //     localStorage.setItem(date, JSON.stringify(data));
-        // });
-
-            // ローカルストレージにデータを保存
-
-            $("table tbody").append('<tr><td class="date">' + date
-            + '</td><td class="category">' + category
-            + '</td><td class="app_name">' + app
-            + '</td><td class="comment">' + com
-            + '</td></tr>');
-
-        //ローカルストレージに保存
-        $(function () {
-            const COLUMN_LIST = "column_list";
-            window.COLUMN_LIST = COLUMN_LIST;
-        });
-
-        function saveLocalStorage(date, category, app_name, comment) {
-            //ローカルストレージにデータを保存
-            localStorage.setItem(date, JSON.stringify({
-                date: date,
-                category: category,
-                app_name: app_name,
-                comment: comment
-            }));
-        }
-
-        var product = { "date": date, "category": category, "app_name": app, "point": com };
-        saveLocalStorage(COLUMN_LIST, product);
-
-        });
-
-
-        //clearクリック
-        $(function () {
-            const COLUMN_LIST = "column_list";
-            window.COLUMN_LIST = COLUMN_LIST;
-            // });
-
-            $("#clear").on("click", function () {
-                removeLocalStorage(COLUMN_LIST);
-                $("table tbody tr").remove();
-            });
-        });
-        function removeLocalStorage(key) {
-            localStorage.removeItem(key);
-        }
 
     </script>
 
