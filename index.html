@@ -9,12 +9,34 @@
     <link rel="stylesheet" href="style.css">
     <script src="main.js" type="module"></script>
 
+    <!-- wikipedia -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <script src="keyword.js"></script>
+
+    <!-- カレンダー -->
+    <!-- <link type='text/css' rel='stylesheet' href='/css/main.css' /> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    <script type='text/javascript' src='/js/fullcalendar/main.js'></script>
+    <script type='text/javascript' src='/js/fullcalendar/ja.js'></script>
+    <script type='text/javascript' src='/js/calendar.js'></script> -->
 </head>
 
 <body>
     <header>
         <h1>コラム作成 & 管理</h1>
+
+        <p>
+            キーワード：<input id="keyword" value="" />
+        </p>
+        <div id="res">
+            <div id="results"></div>
+        </div>
+        <!-- <div id="calendar"></div> -->
+
     </header>
+
+
 
     <main>
         <input type="text" id="date" placeholder="掲載日">
@@ -48,6 +70,10 @@
         <div align="center" class="clear.btn">
             <input type="button" id="clear" value="削除する">
         </div>
+        <!-- LogOutボタン -->
+        <div align="right" class="logout_but">
+            <button id="logout">ログアウト</button>
+        </div>
 
 
     </main>
@@ -60,6 +86,7 @@
     <script>
 
     </script>
+
 
 </body>
 

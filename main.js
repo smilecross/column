@@ -1,4 +1,42 @@
-// 日時をいい感じの形式にする関数
+
+///// GoogleカレンダーAPI/////
+// document.addEventListener('DOMContentLoaded', function () {
+//     var calendarEl = document.getElementById('calendar');
+
+//     var calendar = new FullCalendar.Calendar(calendarEl, {
+
+//         buttonText: {
+//             today: '今月',
+//             month: '月',
+//             list: 'リスト'
+//         },
+
+//         displayEventTime: false,
+//         googleCalendarApiKey: 'AIzaSyBNvkEG1_HYaEj-W8gaq2DkHRGdC2J9cJE',
+//         events: {
+//             googleCalendarId: 'npb_12_%46ukuoka+%53oft%42ank+%48awks#sports@group.v.calendar.google.com',
+//             display: 'background',
+//             color: "#fffbf8",
+//             classNames: 'gcal-event',
+//         },
+//         eventClick: function (arg) {
+//             window.open(arg.event.url, 'google-calendar-event', 'width=560,height=300');
+//             arg.jsEvent.preventDefault()
+//         },
+
+//         locale: 'ja',
+//         contentHeight: 'auto',
+
+
+//         dayCellContent: function (e) {
+//             e.dayNumberText = e.dayNumberText.replace('日', '');
+//         }
+//     });
+//     calendar.render();
+// });
+
+
+///// 日時をいい感じの形式にする関数/////
 function convertTimestampToDatetime(timestamp) {
     const _d = timestamp ? new Date(timestamp * 1000) : new Date();
     const Y = _d.getFullYear();
@@ -8,7 +46,8 @@ function convertTimestampToDatetime(timestamp) {
     const i = _d.getMinutes().toString().padStart(2, '0');
     const s = _d.getSeconds().toString().padStart(2, '0');
     return `${Y}/${m}/${d} ${H}:${i}:${s}`;
-}
+};
+
 // Firebaseからのコピー 
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
@@ -24,7 +63,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "",
+    apiKey: "AIzaSyB8FQQu3bo5tmn8mNwwfmvACbrO7s1NWk0",
     authDomain: "column-19691.firebaseapp.com",
     projectId: "column-19691",
     storageBucket: "column-19691.appspot.com",
@@ -134,5 +173,4 @@ $(function () {
 function removeLocalStorage(key) {
     localStorage.removeItem(key);
 }
-
 
