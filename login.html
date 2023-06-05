@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コラムログイン</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<style>
+    body {
+        background-color: rgb(222, 244, 221);
+
+    }
+
+    .login_but {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #login {
+        display: block;
+        padding: 10px;
+        align-items: center;
+        width: 150px;
+        height: 50px;
+        /* margin: auto; */
+        color: #fff;
+        text-align: center;
+        /* line-height: 50px; */
+        font-weight: bold;
+        background-color: green;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+
+    <!-- LogInボタン -->
+    <div class="login_but">
+        <button id="login">ログイン</button>
+    </div>
+
+</body>
+
+
+<script>
+    //FirebaseConfig（Keyの取得）
+    const firebaseConfig = {
+        apiKey: "AIzaSyARerp6HG_bXmhmSj8b2RUB-RCaIAOI900",
+        authDomain: "yama-kawa.firebaseapp.com",
+        projectId: "yama-kawa",
+        storageBucket: "yama-kawa.appspot.com",
+        messagingSenderId: "279069423993",
+        appId: "1:279069423993:web:33eac097478a9e686117a8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    //GoogleAuth（認証用）
+    
+
+
+
+
+</script>
+
+</html>
