@@ -12,7 +12,7 @@
 //         },
 
 //         displayEventTime: false,
-//         googleCalendarApiKey: 'AIzaSyBNvkEG1_HYaEj-W8gaq2DkHRGdC2J9cJE',
+//         googleCalendarApiKey: '',
 //         events: {
 //             googleCalendarId: 'npb_12_%46ukuoka+%53oft%42ank+%48awks#sports@group.v.calendar.google.com',
 //             display: 'background',
@@ -63,7 +63,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB8FQQu3bo5tmn8mNwwfmvACbrO7s1NWk0",
+    apiKey: "",
     authDomain: "column-19691.firebaseapp.com",
     projectId: "column-19691",
     storageBucket: "column-19691.appspot.com",
